@@ -42,7 +42,7 @@ public class TeacherService {
         }).flatMap(teacher1 -> teacherRepository.save(teacher1));
     }
 
-    public void deleteTeacher(Long id){
-        teacherRepository.findById(id).map(t -> teacherRepository.delete(t));
+    public Mono<Void> deleteTeacher(Long id){
+        return  teacherRepository.findById(id).map(t -> teacherRepository.delete(t)).then();
     }
 }

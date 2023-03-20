@@ -1,6 +1,7 @@
 package com.example.reactivedemo.configuration;
 
 import com.example.reactivedemo.controller.StudentController;
+import com.example.reactivedemo.controller.TeacherController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -15,7 +16,8 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class RouteConfig {
 
     @Bean
-    RouterFunction<ServerResponse> routes(StudentController studentController) {
+    RouterFunction<ServerResponse> routes(StudentController studentController,
+                                          TeacherController teacherController) {
         return route(
                 GET("/students")
                         .and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), studentController::getAllStudents)
@@ -26,6 +28,16 @@ public class RouteConfig {
                 .andRoute(PUT("/students/{id}")
                         .and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), studentController::updateStudent)
                 .andRoute(DELETE("/students/{id}")
-                        .and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), studentController::deleteStudent);
+                        .and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), studentController::deleteStudent)
+                .andRoute(GET("/teachers")
+                        .and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), teacherController::getAllTeachers)
+                .andRoute(GET("/teachers/{id}")
+                        .and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), teacherController::getTeacherById)
+                .andRoute(POST("/teachers")
+                        .and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), teacherController::addNewTeacher)
+                .andRoute(PUT("/teachers/{id}")
+                        .and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), teacherController::updateTeacher)
+                .andRoute(DELETE("/teachers/{id}")
+                        .and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), teacherController::deleteTeacher);
     }
 }
